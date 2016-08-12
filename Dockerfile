@@ -34,7 +34,8 @@ RUN apt-get update && \
     apt-get -y autoremove \
     && apt-get -y clean \
     && rm -rf /var/lib/apt/lists/* && \
-    echo "#! /bin/bash\n set -e\n sudo /usr/sbin/sshd -D &\n exec \"\$@\"" > /home/user/entrypoint.sh && chmod a+x /home/user/entrypoint.sh
+    echo "#! /bin/bash\n set -e\n sudo /usr/sbin/sshd -D &\n exec \"\$@\"" > /home/user/entrypoint.sh && chmod a+x /home/user/entrypoint.sh && \
+    sudo ln -s /usr/local/zs-init/composer.phar /usr/local/bin/composer
 
 ENV LANG en_GB.UTF-8
 ENV LANG en_US.UTF-8
