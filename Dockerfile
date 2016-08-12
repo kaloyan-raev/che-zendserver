@@ -3,7 +3,7 @@ FROM php-zendserver
 ENV JAVA_VERSION=8u65 \
     JAVA_VERSION_PREFIX=1.8.0_65
 ENV JAVA_HOME /opt/jre$JAVA_VERSION_PREFIX
-ENV PATH $JAVA_HOME/bin:$PATH
+ENV PATH $JAVA_HOME/bin:/usr/local/zend/bin:$PATH
 RUN apt-get update && \
     apt-get -y install \
     openssh-server \
