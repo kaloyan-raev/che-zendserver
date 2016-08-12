@@ -1,15 +1,47 @@
-FROM zend/php-zendserver
+FROM php-zendserver
 
-# install cUrl, download and execute the script that will install packages, including Java, onenssh, sudo, as well as create a user with UID 1000
-RUN apt-get install curl -y && \
-    curl https://gist.githubusercontent.com/eivantsov/6fba3d1b34a2672e34e0/raw/29a4520171c03db26f4e0e73ba0588fd15772d8a/che.sh | sh
+ENV JAVA_VERSION=8u65 \
+    JAVA_VERSION_PREFIX=1.8.0_65
+ENV JAVA_HOME /opt/jre$JAVA_VERSION_PREFIX
+ENV PATH $JAVA_HOME/bin:$PATH
+RUN apt-get update && \
+    apt-get -y install \
+    openssh-server \
+    sudo \
+    procps \
+    wget \
+    unzip \
+    mc \
+    ca-certificates \
+    curl \
+    software-properties-common \
+    python-software-properties && \
+    mkdir /var/run/sshd && \
+    sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd && \
+    echo "%sudo ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers && \
+    useradd -u 1000 -G users,sudo -d /home/user --shell /bin/bash -m user && \
+    echo "secret\nsecret" | passwd user && \
+    add-apt-repository ppa:git-core/ppa && \
+    apt-get update && \
+    sudo apt-get install git subversion -y && \
+    apt-get clean && \
+    wget \
+   --no-cookies \
+   --no-check-certificate \
+   --header "Cookie: oraclelicense=accept-securebackup-cookie" \
+   -qO- \
+   "http://download.oracle.com/otn-pub/java/jdk/$JAVA_VERSION-b17/jre-$JAVA_VERSION-linux-x64.tar.gz" | tar -zx -C /opt/ && \
+    apt-get -y autoremove \
+    && apt-get -y clean \
+    && rm -rf /var/lib/apt/lists/* && \
+    echo "#! /bin/bash\n set -e\n sudo /usr/sbin/sshd -D &\n exec \"\$@\"" > /home/user/entrypoint.sh && chmod a+x /home/user/entrypoint.sh
 
-# execute further instructions as a user and login to terminal as user
+ENV LANG en_GB.UTF-8
+ENV LANG en_US.UTF-8
+RUN echo "export JAVA_HOME=/opt/jre$JAVA_VERSION_PREFIX\nexport PATH=$JAVA_HOME/bin:$M2_HOME/bin:$PATH" >> /home/user/.bashrc && \
+    sudo locale-gen en_US.UTF-8
 USER user
-
-# set Java_HOME - required to start a workspace agent
-ENV JAVA_HOME /opt/jre1.8.0_65
-
-# start sshd and execute a non-terminating command
-CMD sudo /usr/sbin/sshd -D && \
-    tailf /dev/null
+EXPOSE 22 4403
+WORKDIR /projects
+ENTRYPOINT ["/home/user/entrypoint.sh"]
+CMD tail -f /dev/null
