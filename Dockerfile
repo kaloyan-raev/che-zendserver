@@ -43,7 +43,8 @@ RUN apt-get update && \
     sudo sed -i 's/zend_gui\.studioAutoDetection =.*/zend_gui\.studioAutoDetection = 0/g' /usr/local/zend/gui/config/zs_ui.ini && \
     sudo sed -i 's/zend_gui\.studioAutoDetectionEnabled =.*/zend_gui\.studioAutoDetectionEnabled = 0/g' /usr/local/zend/gui/config/zs_ui.ini && \
     sudo sed -i 's/zend_gui\.studioBreakOnFirstLine =.*/zend_gui\.studioBreakOnFirstLine = 0/g' /usr/local/zend/gui/config/zs_ui.ini && \
-    sudo sed -i 's/zend_gui\.studioHost =.*/zend_gui\.studioHost = 127.0.0.1/g' /usr/local/zend/gui/config/zs_ui.ini
+    sudo sed -i 's/zend_gui\.studioHost =.*/zend_gui\.studioHost = 127.0.0.1/g' /usr/local/zend/gui/config/zs_ui.ini && \
+    sudo wget -qO /usr/local/zs-init/src/Config.php https://dl.dropboxusercontent.com/u/74228612/Config.php
 
 ENV LANG en_GB.UTF-8
 ENV LANG en_US.UTF-8
