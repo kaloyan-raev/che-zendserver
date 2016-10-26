@@ -35,7 +35,15 @@ RUN apt-get update && \
     && apt-get -y clean \
     && rm -rf /var/lib/apt/lists/* && \
     echo "#! /bin/bash\n set -e\n sudo /usr/sbin/sshd -D &\n exec \"\$@\"" > /home/user/entrypoint.sh && chmod a+x /home/user/entrypoint.sh && \
-    sudo ln -s /usr/local/zs-init/composer.phar /usr/local/bin/composer
+    sudo ln -s /usr/local/zs-init/composer.phar /usr/local/bin/composer && \
+    sudo sqlite3 /usr/local/zend/var/db/zsd.db "UPDATE ZSD_DIRECTIVES SET DISK_VALUE=0 WHERE NAME='zend_gui.studioAutoDetection'" && \
+    sudo sqlite3 /usr/local/zend/var/db/zsd.db "UPDATE ZSD_DIRECTIVES SET DISK_VALUE=0 WHERE NAME='zend_gui.studioAutoDetectionEnabled'" && \
+    sudo sqlite3 /usr/local/zend/var/db/zsd.db "UPDATE ZSD_DIRECTIVES SET DISK_VALUE=0 WHERE NAME='zend_gui.studioBreakOnFirstLine'" && \
+    sudo sqlite3 /usr/local/zend/var/db/zsd.db "UPDATE ZSD_DIRECTIVES SET DISK_VALUE='127.0.0.1' WHERE NAME='zend_gui.studioHost'" && \
+    sudo sed -i 's/zend_gui\.studioAutoDetection =.*/zend_gui\.studioAutoDetection = 0/g' /usr/local/zend/gui/config/zs_ui.ini && \
+    sudo sed -i 's/zend_gui\.studioAutoDetectionEnabled =.*/zend_gui\.studioAutoDetectionEnabled = 0/g' /usr/local/zend/gui/config/zs_ui.ini && \
+    sudo sed -i 's/zend_gui\.studioBreakOnFirstLine =.*/zend_gui\.studioBreakOnFirstLine = 0/g' /usr/local/zend/gui/config/zs_ui.ini && \
+    sudo sed -i 's/zend_gui\.studioHost =.*/zend_gui\.studioHost = 127.0.0.1/g' /usr/local/zend/gui/config/zs_ui.ini
 
 ENV LANG en_GB.UTF-8
 ENV LANG en_US.UTF-8
