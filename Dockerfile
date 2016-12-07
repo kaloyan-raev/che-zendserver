@@ -46,6 +46,11 @@ RUN apt-get update && \
     sudo sed -i 's/zend_gui\.studioHost =.*/zend_gui\.studioHost = 127.0.0.1/g' /usr/local/zend/gui/config/zs_ui.ini && \
     sudo wget -qO /usr/local/zs-init/src/Config.php https://dl.dropboxusercontent.com/u/74228612/Config.php
 
+# Install NodeJS to improve startup time when the JSON language server is enabled
+RUN curl -sL https://deb.nodesource.com/setup_6.x | bash - && \
+    apt-get update && \
+    apt-get install -y nodejs
+
 ENV LANG en_GB.UTF-8
 ENV LANG en_US.UTF-8
 RUN echo "export JAVA_HOME=/opt/jre$JAVA_VERSION_PREFIX\nexport PATH=$JAVA_HOME/bin:$M2_HOME/bin:$PATH" >> /home/user/.bashrc && \
