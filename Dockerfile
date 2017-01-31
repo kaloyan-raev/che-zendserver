@@ -46,6 +46,11 @@ RUN apt-get update && \
     sudo sed -i 's/zend_gui\.studioHost =.*/zend_gui\.studioHost = 127.0.0.1/g' /usr/local/zend/gui/config/zs_ui.ini && \
     sudo wget -qO /usr/local/zs-init/src/Config.php https://dl.dropboxusercontent.com/u/74228612/Config.php
 
+# Bash completion
+RUN apt-get update && \
+    apt-get -y install bash-completion && \
+    echo "\nif [ -f /etc/bash_completion ]; then\n  . /etc/bash_completion\nfi" >> /etc/profile
+
 # Install NodeJS to improve startup time when the JSON language server is enabled
 RUN curl -sL https://deb.nodesource.com/setup_6.x | bash - && \
     apt-get update && \
