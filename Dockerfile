@@ -49,7 +49,9 @@ RUN apt-get update && \
 # Bash completion
 RUN apt-get update && \
     apt-get -y install bash-completion && \
-    echo "\nif [ -f /etc/bash_completion ]; then\n  . /etc/bash_completion\nfi" >> /etc/profile
+    echo "\nif [ -f /etc/bash_completion ]; then\n  . /etc/bash_completion\nfi" >> /etc/profile && \
+    composer global require bamarni/symfony-console-autocomplete && \
+    ~/.composer/vendor/bamarni/symfony-console-autocomplete/symfony-autocomplete --shell bash composer > /etc/bash_completion.d/composer
 
 # Install NodeJS to improve startup time when the JSON language server is enabled
 RUN curl -sL https://deb.nodesource.com/setup_6.x | bash - && \
