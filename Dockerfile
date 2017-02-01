@@ -36,6 +36,7 @@ RUN apt-get update && \
     && rm -rf /var/lib/apt/lists/* && \
     echo "#! /bin/bash\n set -e\n sudo /usr/sbin/sshd -D &\n exec \"\$@\"" > /home/user/entrypoint.sh && chmod a+x /home/user/entrypoint.sh && \
     sudo ln -s /usr/local/zs-init/composer.phar /usr/local/bin/composer && \
+    wget -qO /usr/local/bin/phpunit https://phar.phpunit.de/phpunit.phar && chmod +x /usr/local/bin/phpunit && \
     sudo sqlite3 /usr/local/zend/var/db/zsd.db "UPDATE ZSD_DIRECTIVES SET DISK_VALUE=0 WHERE NAME='zend_gui.studioAutoDetection'" && \
     sudo sqlite3 /usr/local/zend/var/db/zsd.db "UPDATE ZSD_DIRECTIVES SET DISK_VALUE=0 WHERE NAME='zend_gui.studioAutoDetectionEnabled'" && \
     sudo sqlite3 /usr/local/zend/var/db/zsd.db "UPDATE ZSD_DIRECTIVES SET DISK_VALUE=0 WHERE NAME='zend_gui.studioBreakOnFirstLine'" && \
