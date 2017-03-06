@@ -46,7 +46,7 @@ RUN apt-get update && \
     sudo sed -i 's/zend_gui\.studioBreakOnFirstLine =.*/zend_gui\.studioBreakOnFirstLine = 0/g' /usr/local/zend/gui/config/zs_ui.ini && \
     sudo sed -i 's/zend_gui\.studioHost =.*/zend_gui\.studioHost = 127.0.0.1/g' /usr/local/zend/gui/config/zs_ui.ini && \
     sudo wget -qO /usr/local/zs-init/src/Config.php https://dl.dropboxusercontent.com/u/74228612/Config.php && \
-    sudo wget -qO /usr/local/zend/lib/debugger/7.0.x/ZendDebugger.so https://dl.dropboxusercontent.com/u/74228612/ZendDebugger.so
+    sudo wget -qO /usr/local/zend/lib/debugger/php-7.0.x/ZendDebugger.so https://dl.dropboxusercontent.com/u/74228612/ZendDebugger.so
 
 # Bash completion
 RUN apt-get update && \
